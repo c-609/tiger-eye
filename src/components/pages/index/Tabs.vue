@@ -101,7 +101,7 @@ import eventBus from './../../../utils/eventBus.js'
   }
 </script>
 
-<style scope>
+<style>
 .tabs-container{
     user-select: none; 
     position: relative;
@@ -112,11 +112,11 @@ import eventBus from './../../../utils/eventBus.js'
     background-color: #fff;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);
 }
-.el-tabs{
+.tabs-container .el-tabs{
   background: white;
   height:40px;
 }
-.el-tabs--top>.el-tabs__header>.el-tabs__nav-wrap>.el-tabs__nav-scroll>.el-tabs__nav>.el-tabs__active-bar{
+.tabs-container .el-tabs__active-bar{
   height: 3px;
 }
 </style>

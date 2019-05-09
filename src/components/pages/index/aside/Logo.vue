@@ -15,5 +15,6 @@ export default {
 .logo{
   width: 240px;
   height:64px;
+  background:  #409EFF;
 }
 </style>

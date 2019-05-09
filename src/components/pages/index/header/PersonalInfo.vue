@@ -5,6 +5,7 @@
         {{user.username}}<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item command="personalInfo">个人信息</el-dropdown-item>
         <el-dropdown-item command="logout">退出登录</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -37,6 +38,9 @@ export default {
               message: '取消'
             });
           });
+        }
+        else if(command == 'personInfo'){
+          
         }
       }
     },

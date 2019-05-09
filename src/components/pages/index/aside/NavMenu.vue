@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="menu-container">
 <el-menu
   :default-active="checked"
   mode="vertical"
@@ -66,3 +66,9 @@ import eventBus from './../../../../utils/eventBus.js'
     
   }
 </script>
+
+<style>
+.menu-container .el-menu{
+  border-right: solid 0px #e6e6e6;
+}
+</style>

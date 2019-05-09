@@ -11,17 +11,10 @@
         <el-col :span="3" style="padding-top:5px">
           <personal-info></personal-info>
         </el-col>
-      </el-row>
-      
-      
+      </el-row> 
     </div>
 
     <div class="layoout">
-      <div class="layout-aside">
-        <logo></logo>
-        <nav-menu  @open="open"></nav-menu>
-      </div>
-    
       <div class="layout-main">
         <tabs ref="child1Container"></tabs>  
         <el-scrollbar style="height:100%">
@@ -29,6 +22,10 @@
             <router-view v-if="isRouterAlive"></router-view>
           </el-card>
         </el-scrollbar>
+      </div>
+      <div class="layout-aside">
+        <logo></logo>
+        <nav-menu  @open="open"></nav-menu>
       </div>
     </div>
 
