@@ -92,3 +92,12 @@
     }
   }
 </script>
+<style scope>
+.el-input{
+  float: left;
+  width: 40%;
+}
+.el-button{
+  float: left;
+}
+</style>
