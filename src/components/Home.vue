@@ -9,7 +9,7 @@
           <theme-picker ></theme-picker>
         </el-col>
         <el-col :span="3" style="padding-top:5px">
-          <personal-info></personal-info>
+          <personal-info  @open="open"></personal-info>
         </el-col>
       </el-row> 
     </div>

@@ -14,6 +14,7 @@
 
 <script>
 import {logOut, getUser} from './../../../../api/login.js'
+import eventBus from './../../../../utils/eventBus.js'
 export default {
     name: 'PersonalInfo',
     data(){
@@ -22,6 +23,9 @@ export default {
       }
     },
     methods: {
+      open(){
+            //
+        },
       handleCommand(command){
         var _this = this;
         if (command == 'logout') {
@@ -39,8 +43,10 @@ export default {
             });
           });
         }
-        else if(command == 'personInfo'){
-          
+        else if(command == 'personalInfo'){
+          eventBus.$emit("router","/person");//发送路径给Tabs
+          eventBus.$emit("name","个人信息");//发送菜单名给Tabs
+            this.$emit('open');
         }
       }
     },

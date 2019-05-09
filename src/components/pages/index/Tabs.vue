@@ -2,11 +2,11 @@
 <div class="tabs-container">    
   <el-tabs 
     v-model="editableTabsValue"
-    closable
     @tab-remove="removeTab"
     @tab-click="click" >
     <el-tab-pane
       v-for="(item) in editableTabs"
+      :closable="item.close"
       :key="item.name"
       :label="item.title"
       :name="item.name" >
@@ -29,7 +29,7 @@ import eventBus from './../../../utils/eventBus.js'
             title: '首页',
             name: '1',
             content: '首页',
-            closable: false,
+            close: false,
             dir:''
           }],
         tabIndex: 1
@@ -51,8 +51,10 @@ import eventBus from './../../../utils/eventBus.js'
           title: this.tabsName,
           name: newTabName,
           content: this.tabsName,
-          dir:this.dir
+          dir:this.dir,
+          close:true
         });
+        this.$router.push(this.dir)
         this.editableTabsValue = newTabName;
         // console.log(this.editableTabs)
       },
