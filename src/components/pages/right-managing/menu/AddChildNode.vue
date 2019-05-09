@@ -32,7 +32,7 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
 .button-div {
   margin-top: 10px;
   margin-bottom: 20px

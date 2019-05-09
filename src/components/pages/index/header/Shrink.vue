@@ -1,10 +1,7 @@
 <template>
   <div>
-    <!-- <i   class="el-icon-umpmenu--line1 shrink-icon" @click="setCollapse"></i> -->
-    <i  v-if="!isCollapse" class="el-icon-umpmenu--line1 shrink-icon" @click="setCollapse"></i>
-    <i v-else class="el-icon-umpmenu--line shrink-icon" @click="setCollapse"></i>
-    <!-- <span v-if="isCollapse" class="el-icon-unfold" @click="setCollapse"></span>
-    <span v-if="!isCollapse" class="el-icon-fold" @click="setCollapse"></span> -->
+    <i  v-if="!isCollapse" class="el-icon-s-fold shrink-icon" @click="setCollapse"></i>
+    <i v-else class="el-icon-s-unfold shrink-icon" @click="setCollapse"></i>
   </div>
 </template>
 
@@ -31,5 +28,6 @@ export default {
 <style>
 .shrink-icon {
   font-size: 30px;
+  color:white
 }
 </style>

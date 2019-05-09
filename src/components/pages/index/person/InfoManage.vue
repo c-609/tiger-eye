@@ -15,6 +15,7 @@
   </div>
 </template>
 <script>
+import {getUser} from './../../../../api/login.js'
   export default {
     name: 'InfoManage',
     data() {
@@ -59,10 +60,15 @@
       resetForm(formName) {
         this.$refs[formName].resetFields();
       }
+    },
+    created:function(){
+      getUser().then((res)=>{
+        this.ruleForm.userName=res.data.data.username;
+      });
     }
   }
 </script>
-<style scope>
+<style scoped>
 .el-input{
   float: left;
   width: 40%;

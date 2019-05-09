@@ -124,7 +124,6 @@
                     this.randomNum(0, this.identifyCodes.length)
                     ];
                 }
-                console.log(this.identifyCode);
             },
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
