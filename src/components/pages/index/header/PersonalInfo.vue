@@ -1,5 +1,6 @@
 <template>
   <div>
+    <i class="el-icon-s-custom image"></i>
     <el-dropdown class="personnal" @command="handleCommand">
       <span class="el-dropdown-link" style="color:white">
         {{user.username}}<i class="el-icon-arrow-down el-icon--right"></i>
@@ -59,4 +60,8 @@ export default {
 </script>
 
 <style>
+.image{
+  color: white;
+  font-size: 20px
+}
 </style>
