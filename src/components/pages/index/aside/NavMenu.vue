@@ -22,7 +22,7 @@
           style="padding-left:53px"
           :key="index" 
           :index=child.path 
-          @click="open(child.name)">{{child.name}}</el-menu-item>
+          @click="open(child.name)"><i class="el-icon-edit"></i>{{child.name}}</el-menu-item>
       </template>
     </el-submenu>
   </template>

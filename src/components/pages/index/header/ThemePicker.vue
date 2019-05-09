@@ -1,11 +1,14 @@
 <template>
-<div>
-  <el-color-picker
-    class="theme-picker"
-    popper-class="theme-picker-dropdown"
-    v-model="theme"
-    :size="size">
-  </el-color-picker>
+<div class="picker-container">
+   <el-tooltip class="item" effect="dark" content="主题色" placement="bottom">
+    <el-color-picker
+      class="theme-picker"
+      popper-class="theme-picker-dropdown"
+      v-model="theme"
+      :size="size">
+      
+    </el-color-picker>
+   </el-tooltip>
   </div>
 </template>
 
@@ -184,6 +187,5 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
 </style>

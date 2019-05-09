@@ -36,7 +36,7 @@ import eventBus from './../../../utils/eventBus.js'
       }
     },
     created(){
-        this.$router.push('wel')
+        this.$router.push('/wel')
         eventBus.$on('name',res=>{
             this.tabsName=res;
             this.isFind=-1;
