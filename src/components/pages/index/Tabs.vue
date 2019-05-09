@@ -30,12 +30,13 @@ import eventBus from './../../../utils/eventBus.js'
             name: '1',
             content: '首页',
             close: false,
-            dir:''
+            dir:'/wel'
           }],
         tabIndex: 1
       }
     },
     created(){
+        this.$router.push('wel')
         eventBus.$on('name',res=>{
             this.tabsName=res;
             this.isFind=-1;

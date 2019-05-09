@@ -17,7 +17,12 @@
           <span slot="title">{{item.name}}</span>
       </template>
       <template>
-        <el-menu-item v-for="(child,index) of item.children" :key="index" :index=child.path @click="open(child.name)">{{child.name}}</el-menu-item>
+        <el-menu-item  
+          v-for="(child,index) of item.children" 
+          style="padding-left:53px"
+          :key="index" 
+          :index=child.path 
+          @click="open(child.name)">{{child.name}}</el-menu-item>
       </template>
     </el-submenu>
   </template>
@@ -70,5 +75,12 @@ import eventBus from './../../../../utils/eventBus.js'
 <style>
 .menu-container .el-menu{
   border-right: solid 0px #e6e6e6;
+  text-align: left
 }
+.menu-container .el-menu-item.is-active{
+  background-color: #409EFF;
+  color: white
+}
+ 
+
 </style>

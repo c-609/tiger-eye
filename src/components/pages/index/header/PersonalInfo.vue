@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dropdown class="personnal" @command="handleCommand">
-      <span class="el-dropdown-link">
+      <span class="el-dropdown-link" style="color:white">
         {{user.username}}<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">

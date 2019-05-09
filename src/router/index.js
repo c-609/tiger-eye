@@ -8,7 +8,7 @@ import User from '@/components/pages/right-managing/User'
 import Role from '@/components/pages/right-managing/Role'
 import Menu from '@/components/pages/right-managing/Menu'
 import Person from '@/components/pages/index/person/Person'
-
+import Wel from './../components/pages/index/Wel'
 Vue.use(Router)
 
 export default new Router({
@@ -61,6 +61,14 @@ export default new Router({
           path: '/person',
           name: 'person',
           component: Person,
+          meta: {
+            requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+          },
+        },
+        {
+          path: '/wel',
+          name: 'wel',
+          component: Wel,
           meta: {
             requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
           },
