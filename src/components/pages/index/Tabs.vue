@@ -1,0 +1,122 @@
+<template>
+<div class="tabs-container">    
+  <el-tabs 
+    v-model="editableTabsValue"
+    closable
+    @tab-remove="removeTab"
+    @tab-click="click" >
+    <el-tab-pane
+      v-for="(item) in editableTabs"
+      :key="item.name"
+      :label="item.title"
+      :name="item.name" >
+    </el-tab-pane>
+  </el-tabs>
+</div>
+</template>
+
+
+<script>
+import eventBus from './../../../utils/eventBus.js'
+  export default {
+    data() {
+      return {
+          dir:'',
+          isFind:-1,
+          tabsName:'',
+          editableTabsValue: '1',
+          editableTabs: [{
+            title: '首页',
+            name: '1',
+            content: '首页',
+            closable: false,
+            dir:''
+          }],
+        tabIndex: 1
+      }
+    },
+    created(){
+        eventBus.$on('name',res=>{
+            this.tabsName=res;
+            this.isFind=-1;
+        })
+        eventBus.$on('router',res=>{
+            this.dir=res;  
+        })
+    },
+    methods: {
+      addTab(editableTabsValue) {
+        let newTabName = ++this.tabIndex + '';
+        this.editableTabs.push({
+          title: this.tabsName,
+          name: newTabName,
+          content: this.tabsName,
+          dir:this.dir
+        });
+        this.editableTabsValue = newTabName;
+        // console.log(this.editableTabs)
+      },
+      click(item){
+          this.editableTabs.map((index)=>{
+              if(index.name==item.name){
+                eventBus.$emit("checked",index.dir);
+                this.$router.push(index.dir)
+              }
+          })
+         
+      },
+      check(){
+        this.editableTabs.map((index)=>{
+            if(this.tabsName==index.title){
+             this.isFind=0;
+             this.editableTabsValue=index.name;
+            }
+        })
+        if(this.isFind==-1){
+            this.addTab();
+        }else{
+            // console.log("----------------------------"+this.isFind)
+        }
+       
+      },
+      removeTab(targetName) {
+        let tabs = this.editableTabs;
+        let activeName = this.editableTabsValue;
+        if (activeName === targetName) {
+          tabs.forEach((tab, index) => {
+            if (tab.name === targetName) {
+              let nextTab = tabs[index + 1] || tabs[index - 1];
+              if (nextTab) {
+                activeName = nextTab.name;
+                 eventBus.$emit("checked",nextTab.dir);
+                  this.$router.push(nextTab.dir);
+              }
+            }
+          });
+        }
+        this.editableTabsValue = activeName;
+        this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+      }
+    }
+  }
+</script>
+
+<style scope>
+.tabs-container{
+    user-select: none; 
+    position: relative;
+    padding: 0 15px;
+    box-sizing: border-box;
+    overflow: hidden;
+    border-top: 1px solid #f6f6f6;
+    background-color: #fff;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);
+}
+.el-tabs{
+  background: white;
+  height:40px;
+}
+.el-tabs--top>.el-tabs__header>.el-tabs__nav-wrap>.el-tabs__nav-scroll>.el-tabs__nav>.el-tabs__active-bar{
+  height: 3px;
+}
+</style>

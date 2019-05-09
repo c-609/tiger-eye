@@ -1,0 +1,68 @@
+<template>
+<div>
+<el-menu
+  :default-active="checked"
+  mode="vertical"
+  :collapse="isCollapse"
+  class="el-menu-vertical-demo menu"
+  @open="handleOpen"
+   @select="select"
+  @close="handleClose"
+  router >
+  <template v-for="(item,index) in menus">
+    <el-submenu :key="index" :index="index+''" >
+      <template slot="title">
+        <!-- <i :class="item.icon" style="color: #20a0ff;width: 14px;"></i>  -->
+        <i class="el-icon-edit"></i>
+          <span slot="title">{{item.name}}</span>
+      </template>
+      <template>
+        <el-menu-item v-for="(child,index) of item.children" :key="index" :index=child.path @click="open(child.name)">{{child.name}}</el-menu-item>
+      </template>
+    </el-submenu>
+  </template>
+</el-menu>
+</div>
+</template>
+
+<script>
+import {getMenu} from './../../../../api/right-managing/menu.js'
+import eventBus from './../../../../utils/eventBus.js'
+  export default {
+    data() {
+      return { 
+        checked:'',
+        menus:[],
+      };
+    },
+    created:function(){
+        getMenu().then(res=>{      
+          this.menus = res.data.data;     
+        });
+         eventBus.$on('checked',res=>{//接收默认选中的导航栏菜单
+            this.checked=res;
+        })   
+    },
+    computed: {
+      isCollapse(){
+        return this.$store.state.isCollapse;
+      }
+    },
+    methods: {
+        select(item){
+            eventBus.$emit("router",item);//发送路径给Tabs
+        },
+        open(name){
+            eventBus.$emit("name",name);//发送菜单名给Tabs
+            this.$emit('open');//
+        },
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath);
+      }
+    }
+    
+  }
+</script>

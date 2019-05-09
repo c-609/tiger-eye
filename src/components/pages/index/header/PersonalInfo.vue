@@ -1,0 +1,52 @@
+<template>
+  <div>
+    <el-dropdown class="personnal" @command="handleCommand">
+      <span class="el-dropdown-link">
+        {{user.username}}<i class="el-icon-arrow-down el-icon--right"></i>
+      </span>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
+  </div>
+</template>
+
+<script>
+import {logOut, getUser} from './../../../../api/login.js'
+export default {
+    name: 'PersonalInfo',
+    data(){
+      return {
+        user:[]
+      }
+    },
+    methods: {
+      handleCommand(command){
+        var _this = this;
+        if (command == 'logout') {
+          this.$confirm('注销登录, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            logOut();
+            _this.$router.replace({path: '/'});
+          }).catch(() => {
+            _this.$message({
+              type: 'info',
+              message: '取消'
+            });
+          });
+        }
+      }
+    },
+    created:function(){
+      getUser().then((res)=>{
+        this.user=res.data.data;
+      });
+    }
+}
+</script>
+
+<style scoped>
+</style>
