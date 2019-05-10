@@ -47,7 +47,6 @@ export default {
     watch:{
         tables(){
             eventBus.$emit('Ta',this.tables);
-            console.log(this.tables)
         }
     }
 }

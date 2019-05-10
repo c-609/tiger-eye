@@ -62,10 +62,8 @@ import eventBus from './../../../../utils/eventBus.js'
             this.$emit('open');//
         },
       handleOpen(key, keyPath) {
-        console.log(key, keyPath);
       },
       handleClose(key, keyPath) {
-        console.log(key, keyPath);
       }
     }
     

@@ -96,8 +96,6 @@ import eventBus from './../../../../utils/eventBus.js'
     created:function(){
         eventBus.$on('Ta',(data)=>{
             this.Tables=data 
-            console.log(this.Tables)
-            console.log("==========================")
         })
     },
     data() {
@@ -173,8 +171,6 @@ import eventBus from './../../../../utils/eventBus.js'
       handleDialogSure(){
         updateUser(this.form.id, this.form.password).then(res=>{
           this.reload();
-          console.log(res)
-          alert("fff")
           });
           this.dialogFormVisible=false;
       },

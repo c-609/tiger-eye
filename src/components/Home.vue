@@ -68,6 +68,7 @@ export default {
           this.$refs.child1Container.check();
     },
     reload(){
+      
       this.isRouterAlive = false
       this.$nextTick(function(){
         this.isRouterAlive = true

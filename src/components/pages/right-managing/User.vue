@@ -1,12 +1,20 @@
 <template>
   <div>
-      <add-user
-        :roles="roles" 
-        :users="users" 
-        style="float:left">
-      </add-user>
-      <TableSearch :tableData="users"></TableSearch>
-      <user-table :header="header" ></user-table>
+    <el-row>
+      <el-col :span="4">
+        <user-dept-tree style="margin-right:20px"></user-dept-tree>
+      </el-col>
+      <el-col :span="20">
+        <add-user
+          :roles="roles" 
+          :users="users" 
+          style="float:left">
+        </add-user>
+        <TableSearch :tableData="users"></TableSearch>
+        <user-table :header="header" ></user-table>
+      </el-col>
+      
+    </el-row>
   </div>
 </template>
 
@@ -14,6 +22,7 @@
 import {getRoleList} from './../../../api/right-managing/role.js'
 import {getUserList} from './../../../api/right-managing/user.js'
 import UserTable from './user/UserTable'
+import UserDeptTree from './user/UserDeptTree'
 import AddUser from './user/AddUser'
 import TableSearch from './../../common/TableSearch'
 export default {
@@ -22,7 +31,8 @@ export default {
   components: {
     UserTable,
     AddUser,
-    TableSearch
+    TableSearch,
+    UserDeptTree
   },
 
   data() {

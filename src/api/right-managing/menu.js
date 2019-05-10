@@ -1,5 +1,4 @@
 import request from 'axios'
-import { get } from 'https';
 export function getMenu () {
     return request({
       url: '/upms/menu',

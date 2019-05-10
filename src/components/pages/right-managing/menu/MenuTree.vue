@@ -89,7 +89,6 @@ export default {
     created:function(){
       getMenuTree().then(res=>{
         this.menuData = res.data.data; 
-        console.log(res)
         })
       getMenuList().then(response => {
         this.allMenu = response.data.data;   

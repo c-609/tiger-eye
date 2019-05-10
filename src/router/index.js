@@ -7,6 +7,7 @@ import test from '@/test/test'
 import User from '@/components/pages/right-managing/User'
 import Role from '@/components/pages/right-managing/Role'
 import Menu from '@/components/pages/right-managing/Menu'
+import Dept from '@/components/pages/right-managing/Dept'
 import Person from '@/components/pages/index/person/Person'
 import Wel from './../components/pages/index/Wel'
 Vue.use(Router)
@@ -53,6 +54,14 @@ export default new Router({
           path: '/upms/menu',
           name: 'Menu',
           component: Menu,
+          meta: {
+            requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+          },
+        },
+        {
+          path: '/upms/dept',
+          name: 'Dept',
+          component: Dept,
           meta: {
             requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
           },

@@ -12,6 +12,16 @@
       :name="item.name" >
     </el-tab-pane>
   </el-tabs>
+  <el-dropdown style="float:right; margin-top:5px">
+    <el-button type="primary" size="mini">
+      更多
+      <i class="el-icon-arrow-down el-icon--right"></i>
+    </el-button>
+    <el-dropdown-menu slot="dropdown">
+      <el-dropdown-item @click.native="closeOthersTabs">关闭其他</el-dropdown-item>
+      <el-dropdown-item @click.native="closeAllTabs">关闭全部</el-dropdown-item>
+    </el-dropdown-menu>
+  </el-dropdown>
 </div>
 </template>
 
@@ -99,6 +109,12 @@ import eventBus from './../../../utils/eventBus.js'
         }
         this.editableTabsValue = activeName;
         this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+      },
+      closeOthersTabs(){
+
+      },
+      closeAllTabs(){
+        
       }
     }
   }
@@ -118,6 +134,7 @@ import eventBus from './../../../utils/eventBus.js'
 .tabs-container .el-tabs{
   background: white;
   height:40px;
+  float: left;
 }
 .tabs-container .el-tabs__active-bar{
   height: 3px;
