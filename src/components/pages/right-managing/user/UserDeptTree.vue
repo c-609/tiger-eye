@@ -7,6 +7,7 @@
       :props="deptProps" 
       @node-click="getNodeData"
       :render-content="renderContent"
+      default-expand-all
       >  
     </el-tree>
   </div>
@@ -31,7 +32,6 @@ export default {
   created:function(){
     getDeptTree().then(res=>{
       this.deptData = res.data.data
-      console.log(this.deptData)
     })
   },
 

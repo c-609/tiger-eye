@@ -72,10 +72,7 @@ export default {
     this.addMenu();
     this.addButton();
     this.nodeEdit();
-    getMenu().then((data)=>{
-      this.form=data.data.data;
-    });
-    eventBus.$on("getNodeData",(form)=>{
+    eventBus.$on("getMenuNodeData",(form)=>{
         this.addParentId = form.id;
         this.form = form;
         this.formStatus='';
@@ -93,14 +90,14 @@ export default {
       })
     },
     addButton(){
-      eventBus.$on("add",(formAdd,formStatus)=>{
+      eventBus.$on("addMenu",(formAdd,formStatus)=>{
         this.formStatus = formStatus;
         this.formEdit = formAdd;
         this.resetForm();
       })
     },
     nodeEdit(){
-      eventBus.$on('nodeEdit',()=>{
+      eventBus.$on('menuNodeEdit',()=>{
         this.formEdit = false;
         this.formStatus = 'edit'
       })

@@ -5,10 +5,10 @@
 </template>
 
 <script>
-import { deleteMenu} from '../../../../api/right-managing/menu';
+import { deleteDept} from '../../../../api/right-managing/dept';
 import eventBus from "./../../../../utils/eventBus.js"
 export default {
-  name: 'MenuButton',
+  name: 'DeptButton',
   inject:['reload'],
   data(){
     return{
@@ -21,11 +21,11 @@ export default {
   },
   methods:{
     addChildButton(){
-      eventBus.$emit("addMenu",this.formAdd,'add')
+      eventBus.$emit("addDept",this.formAdd,'add')
     },
   },
   created:function(){
-    eventBus.$on("menuNodeClick",(i)=>{
+    eventBus.$on("deptNodeClick",(i)=>{
           this.disabled = false;
     })
   }

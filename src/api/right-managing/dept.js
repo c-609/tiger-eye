@@ -11,9 +11,8 @@ export function getDeptTree(){
 //根据部门id获取部门信息
 export function getDeptInfo(id){
   return request({
-    url: '/upms/dept',
+    url: '/upms/dept/'+id,
     method:'get',
-    params: {id}
   })
 }
 

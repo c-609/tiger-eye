@@ -18,10 +18,10 @@
 <script>
 import { getMenuTree, getMenuList } from './../../../../api/right-managing/menu.js'
 import eventBus from "./../../../../utils/eventBus.js"
-import NodeTools from "./NodeTools"
+import MenuTools from "./MenuTools"
 export default {
   name: 'MenuTree',
-  components:'NodeTools',
+  components:'MenuTools',
   data() {
       return {
          form: {
@@ -63,14 +63,14 @@ export default {
             break;
           }
         }
-        eventBus.$emit("getNodeData",this.form);
-        eventBus.$emit("nodeClick");
+        eventBus.$emit("getMenuNodeData",this.form);
+        eventBus.$emit("menuNodeClick");
         // eventBus.$emit("isClickNode",'true');0k
       },
       
       renderContent(h,{data}){
         let  _this = this;
-        return h(NodeTools,{
+        return h(MenuTools,{
           props:{
             DATA:data,
             // NODE:node,
@@ -99,10 +99,10 @@ export default {
 
 <style>
 /* .el-tree-node__content:hover .tree-btn,鼠标悬浮出现tree-btn */
-.is-current>.el-tree-node__content .tree-btn{
+.is-current>.el-tree-node__content .menu-btn{
   display:inline-block;
 }
-.is-current>.el-tree-node__content .tree-label{
+.is-current>.el-tree-node__content .menu-label{
   font-weight:600;
   white-space:normal;
 }

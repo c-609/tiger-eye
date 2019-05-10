@@ -1,7 +1,7 @@
 <template>
   <div>
-  <span class="tree-label">{{DATA.name}}</span>
-  <span  v-if="true" style="margin-left:15px" class="tree-btn">
+  <span class="dept-label">{{DATA.name}}</span>
+  <span  v-if="true" style="margin-left:15px" class="dept-btn">
     <!-- <el-button type="text" class="el-icon-plus" @click.stop="nodeAdd(STORE,DATA,NODE)"></el-button> -->
     <el-button type="text" class="el-icon-edit" @click.stop="nodeEdit(DATA)"></el-button>
     <el-button type="text" class="el-icon-delete" @click.stop="nodeDel(DATA)"></el-button>
@@ -11,9 +11,9 @@
 
 <script>
 import eventBus from "./../../../../utils/eventBus.js"
-import { deleteMenu} from '../../../../api/right-managing/menu';
+import { deleteDept} from '../../../../api/right-managing/dept';
 export default {
-  name:'NodeOperate',
+  name:'DeptTools',
   inject:['reload'],
   props: ['DATA'],
   data(){
@@ -31,7 +31,7 @@ export default {
     //   this.$emit('nodeAdd',s,d,n)
     // },
     nodeEdit(d){//编辑 
-      eventBus.$emit('nodeEdit');
+      eventBus.$emit('deptNodeEdit');
     },
     nodeDel(d){//删除
       // this.$emit('nodeDel',s,d,n)
@@ -47,7 +47,7 @@ export default {
           confirmButtonText: '确定',
           type: 'warning'
         }).then(() => {
-          deleteMenu(_this.id).then((res)=>{
+          deleteDept(_this.id).then((res)=>{
             this.reload();
           });
         }).catch(() => {
@@ -64,8 +64,8 @@ export default {
 }
 </script>
 
-<style>
- .tree-btn{
+<style scoped>
+ .dept-btn{
   display:none
 }
 </style>
