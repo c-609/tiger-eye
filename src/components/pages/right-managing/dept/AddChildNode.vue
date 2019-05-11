@@ -25,10 +25,10 @@ export default {
     },
   },
   created:function(){
-    eventBus.$on("deptNodeClick",(i)=>{
+    eventBus.$on("deptNodeClick",()=>{
           this.disabled = false;
     })
-  }
+  },
 }
 </script>
 

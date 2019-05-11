@@ -54,6 +54,7 @@ export default {
     this.addButton();
     this.nodeEdit();
     eventBus.$on("getDeptNodeData",(form)=>{
+      //  alert("1234")
         this.addParentId = form.id;
         this.form = form;
         this.formStatus='';
@@ -61,9 +62,15 @@ export default {
         this.formAdd=true;
       })
   },
+   beforeDestroy() {
+     alert("5")
+    eventBus.$off('getDeptNodeData' );
+
+},
   methods:{
     addDept(){
       eventBus.$on("addDeptNode",(formAdd,formStatus,node)=>{
+      
         this.formStatus = formStatus;
         this.formEdit = formAdd;
         this.addParentId = node;    

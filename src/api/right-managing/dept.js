@@ -31,12 +31,11 @@ export function deleteDept(id){
   })
 }
 
-export function updateDept(id,name,parentId){
+export function updateDept(name,parentId){
   return request({
     url: '/upms/dept/dept_update',
     method: 'post',
     params: {
-      "id": id,
       "name": name,
       "parentId":parentId
     }

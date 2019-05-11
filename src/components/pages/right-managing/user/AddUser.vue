@@ -116,7 +116,8 @@ export default {
                 j++;
               }
             }
-            addUser( this.userForm.account, this.userForm.passWord1, roles)
+            
+            addUser( this.userForm.account, this.userForm.passWord1, roles.join(","))
               .then(res=>{
                 console.log(res);
                 this.reload();

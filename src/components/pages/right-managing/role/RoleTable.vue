@@ -153,8 +153,8 @@ import eventBus from './../../../../utils/eventBus.js';
         }) 
       },
       handleDialogSure(){
-        var mids = this.$refs.menuData.getCheckedKeys().concat(this.$refs.menuData.getHalfCheckedKeys());
-        console.log(mids)
+        var m = this.$refs.menuData.getCheckedKeys().concat(this.$refs.menuData.getHalfCheckedKeys());
+        var mids = m.join(",")
         var _this = this;
         updateRoleRight(this.rid, mids).then((res)=>{
           if(status!=200){

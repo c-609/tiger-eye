@@ -43,14 +43,16 @@ export default {
         //  o:表示单个数值  1：表示多个数值 数组
         {label:'账号' ,prop:'username',type:0},
         {label:'用户角色' ,prop:'roles',type:1},
+        // {label:'部门'，prop:}
         {label: '操作', prop:'operate',width:'200px',fixed:'right'}
       ],
     }
   },
 
   mounted:function(){
-    getUserList().then((data)=>{
-      this.users=data.data.data;
+    getUserList().then((res)=>{
+      this.users=res.data.data;
+      console.log(res);
     });
     getRoleList().then((data)=>{
       this.roles=data.data.data;    
