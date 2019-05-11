@@ -31,7 +31,7 @@ export default {
           sort: undefined,
         },
         allDept:[],
-        deptData:[{status:false}],
+        deptData:[],
         deptProps:{
           label: 'name',
           children: 'children'
@@ -47,14 +47,13 @@ export default {
         this.isLoadingTree = true;
       },
      getNodeData(data) {
-        data.status = true
         var id = data.id;
-      
+        var _this = this;
         getDeptInfo(id).then(response => {
           this.form = response.data.data;
+          eventBus.$emit("getDeptNodeData",this.form);
         });
-        
-        eventBus.$emit("getDeptNodeData",this.form);
+        // eventBus.$emit("getDeptNodeData",this.form); 大坑
         eventBus.$emit("deptNodeClick");
         // eventBus.$emit("isClickNode",'true');0k
       },
@@ -79,7 +78,8 @@ export default {
    
     created:function(){
       getDeptTree().then(res=>{
-        this.deptData = res.data.data; 
+        this.deptData = res.data.data;
+       
         })
     }
 }
