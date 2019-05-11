@@ -26,11 +26,11 @@ export function deleteUser(uid){
   })
 }
 
-export function updateUser(id, password){
+export function updateUser(id, username){
   return request({
     url: '/upms/user/update',
     method: 'post',
-    params: {"id":id, "password":password}
+    params: {"id":id, "username": username}
   })
 }
 

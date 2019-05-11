@@ -3,16 +3,16 @@
     <el-card>
     <el-form label-width="100px" :model="form" :rules="rules" ref="ruleForm">
       <el-form-item label="父级节点" prop="parentId">
-        <el-input v-model="form.parentId" :disabled="true"></el-input>
+        <el-input v-model="form.parentId" :disabled="formEdit"></el-input>
       </el-form-item>
       <el-form-item label="节点ID" prop="id" v-if="formStatus!='add'">
-        <el-input v-model="form.id" placeholder="请输入节点ID" :disabled="formEdit"></el-input>
+        <el-input v-model="form.id" placeholder="请输入节点ID" :disabled="true"></el-input>
       </el-form-item>
-      <el-form-item label=标题 prop="name">
-        <el-input v-model="form.name"  placeholder="请输入标题" :disabled="formEdit"></el-input>
+      <el-form-item label=部门名称 prop="name">
+        <el-input v-model="form.name"  placeholder="请输入部门名称" :disabled="formEdit"></el-input>
       </el-form-item>
-      <el-form-item label="请求地址" prop="sort">
-        <el-input v-model="form.sort"  placeholder="请求地址" :disabled="formEdit"></el-input>
+      <el-form-item label="排序" prop="sort">
+        <el-input v-model="form.sort"  placeholder="请输入排序" :disabled="formEdit"></el-input>
       </el-form-item>
 
       <el-form-item style="float:left" v-if="formStatus=='add'">
@@ -90,7 +90,7 @@ export default {
         })
     },
     editUpdate(){
-      updateDept(this.form.id, this.form.name, this.form.component, this.form.path)
+      updateDept(this.form.id, this.form.name, this.form.parentId)
         .then(res=>{
           this.reload();
         })

@@ -169,7 +169,7 @@ import eventBus from './../../../../utils/eventBus.js'
           this.form.id=row.id;
       },
       handleDialogSure(){
-        updateUser(this.form.id, this.form.password).then(res=>{
+        updateUser(this.form.id, this.form.username).then(res=>{
           this.reload();
           });
           this.dialogFormVisible=false;
