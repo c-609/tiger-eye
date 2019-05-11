@@ -5,15 +5,14 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
-		code:-1,
 		isCollapse:false
 	},
 	mutations: {
 		login(state,code) {
-			state.code = code;
+			sessionStorage.setItem("code",code);
 		},
 		logout(state,code) {
-			state.code = code;
+			sessionStorage.setItem("code",code);
 		},
 		setCollapse(state){
 			state.isCollapse = !state.isCollapse;

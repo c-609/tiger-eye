@@ -23,11 +23,14 @@
         :fixed="item.fixed">
         <template slot-scope="scope">
           <div>{{scope.row[item.prop]}}</div> 
+          <el-button @click="handleEdit(scope.row)" type="text" size="small" v-if="item.prop=='operate'">编辑</el-button>
           <el-button @click="handleEditRirhts(scope.row)" type="text" size="small" v-if="item.prop=='operate'">修改权限</el-button>
           <el-button @click="handleDelete(scope.row.id)" type="text" size="small" v-if="item.prop=='operate'">删除</el-button>
        </template>  
       </el-table-column>   
     </el-table>
+
+    <role-form :show.sync="addRoleForm"></role-form>
 
     <el-dialog
       title="修改权限"
@@ -67,9 +70,11 @@
 <script>
 import {deleteRole, getRightTree, getRoleRight, updateRoleRight} from './../../../../api/right-managing/role.js'
 import eventBus from './../../../../utils/eventBus.js';
+import RoleForm  from './RoleForm'
   export default {
     name: 'BasicTable',
     props: ['header'],
+    components: {RoleForm},
     inject:['reload'],
     created:function(){
       eventBus.$on('Ta',(data)=>{
@@ -86,6 +91,7 @@ import eventBus from './../../../../utils/eventBus.js';
         pagesize: 8,
 		    currpage: 1,
         dialogTransferVisible: false,
+        addRoleForm: false,
         data:{
           rid:'',
           mids:''
@@ -118,7 +124,9 @@ import eventBus from './../../../../utils/eventBus.js';
 				handleSizeChange(psize) {
 					this.pagesize = psize;
 				},
-
+      handleEdit(row){
+        this.addRoleForm = true;
+      },
       handleDelete(id) {
           var _this = this;
           this.$confirm('是否删除此角色?', '提示', {

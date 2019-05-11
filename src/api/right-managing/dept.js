@@ -16,10 +16,21 @@ export function getDeptInfo(id){
   })
 }
 
-export function addDept(){
+export function addDept(name,parentId,sort){
+  const data = {
+    "name": name,
+    "parentId": parentId
+  }
   return request({
     url: '/upms/dept/dept_add',
     method: 'post',
+    params: data,
+    transformRequest: [function(){
+      return JSON.stringify(data)
+    }],
+    headers: {
+      'Content-Type' : 'application/json;'
+    }
   })
 }
 
@@ -31,13 +42,21 @@ export function deleteDept(id){
   })
 }
 
-export function updateDept(name,parentId){
+export function updateDept(id,name,parentId){
+  const data = {
+    "id": id,
+    "name": name,
+    "parentId": parentId
+  }
   return request({
     url: '/upms/dept/dept_update',
     method: 'post',
-    params: {
-      "name": name,
-      "parentId":parentId
+    params: data,
+    transformRequest: [function(){
+      return JSON.stringify(data)
+    }],
+    headers: {
+      'Content-Type' : 'application/json;'
     }
   })
 }

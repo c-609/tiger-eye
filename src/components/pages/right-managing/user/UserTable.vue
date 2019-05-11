@@ -60,6 +60,16 @@
         <el-form-item label="密码" :label-width="formLabelWidth">
           <el-input v-model="form.password" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="所属部门" :label-width="formLabelWidth">
+          <base-tree-select
+            :data="deptData"
+            :defaultProps="deptProps" 
+        
+            :nodeKey="nodeKey" 
+            :checkedKeys="defaultCheckedKeys"
+            @popoverHide="popoverHide" >
+          </base-tree-select>
+        </el-form-item>
         <el-form-item label="角色标识"  :label-width="formLabelWidth">
           <el-checkbox v-model="form.admin">ROLE_admin</el-checkbox>
           <el-checkbox v-model="form.superuser">ROLE_superuser</el-checkbox>
@@ -90,16 +100,28 @@
 <script>
 import {getUserMenuTree, deleteUser, updateUser} from './../../../../api/right-managing/user.js'
 import eventBus from './../../../../utils/eventBus.js'
+import BaseTreeSelect from './UserDeptTree/../../../../common/BaseTreeSelect'
+import {getDeptTree} from './../../../../api/right-managing/dept.js'
   export default {
     name: 'UserTable',
+    components: {BaseTreeSelect},
     inject:['reload'],
     created:function(){
         eventBus.$on('Ta',(data)=>{
             this.Tables=data 
         })
+        getDeptTree().then(res=>{
+          this.deptData = res.data.data
+        })
     },
     data() {
       return {
+        deptData: '',
+        deptProps: {
+          value: 'id',
+          label: 'name',
+          children: 'children'
+        },
         Tables:[],
         search: '',  
         pagesize: 5,

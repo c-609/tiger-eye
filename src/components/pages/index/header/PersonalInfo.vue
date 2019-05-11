@@ -35,6 +35,7 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
+            this.$store.commit('logout',-1);
             logOut();
             _this.$router.replace({path: '/'});
           }).catch(() => {

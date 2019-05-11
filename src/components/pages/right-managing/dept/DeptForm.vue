@@ -62,11 +62,9 @@ export default {
         this.formAdd=true;
       })
   },
-   beforeDestroy() {
-     alert("5")
+  beforeDestroy() {
     eventBus.$off('getDeptNodeData' );
-
-},
+  },
   methods:{
     addDept(){
       eventBus.$on("addDeptNode",(formAdd,formStatus,node)=>{
@@ -91,13 +89,13 @@ export default {
       })
     },
     addSave(){
-      addDept(this.form.parentId, this.form.url, this.form.name, this.form.path)
+      addDept(this.form.name, this.form.parentId)
         .then(res=>{
           this.reload();
         })
     },
     editUpdate(){
-      updateDept(this.form.id, this.form.name, this.form.parentId)
+      updateDept(this.form.id,this.form.name, this.form.parentId)
         .then(res=>{
           this.reload();
         })

@@ -111,11 +111,20 @@ import eventBus from './../../../utils/eventBus.js'
         this.editableTabs = tabs.filter(tab => tab.name !== targetName);
       },
       closeOthersTabs(){
-
+        this.editableTabs.map((index)=>{
+            if(index.name!=this.editableTabsValue&&index.name!=1){
+              this.removeTab(index.name)
+            }
+        })
       },
       closeAllTabs(){
-        
+        this.editableTabs.map((index)=>{
+            if(index.name!=1){
+              this.removeTab(index.name)
+            }
+        })
       }
+
     }
   }
 </script>

@@ -49,23 +49,41 @@ export default {
   name: 'MenuForm',
   inject:['reload'],
   data(){
-    return {
+    var checkName = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('标题不能为空'));
+      }
+    };
+    var checkUrl = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请求地址不能为空'));
+      }
+    };
+    return { 
       formStatus:'',
       formEdit:true,
       formAdd:true,
       addParentId:'',
       form: {
-          permission: undefined,
-          name: undefined,
-          id: undefined,
-          parentId: undefined,
-          icon: undefined,
-          sort: undefined,
-          component: undefined,
-          type: undefined,
-          path: undefined,
-          url:undefined
-        },
+        permission: undefined,
+        name: undefined,
+        id: undefined,
+        parentId: undefined,
+        icon: undefined,
+        sort: undefined,
+        component: undefined,
+        type: undefined,
+        path: undefined,
+        url:undefined
+      },
+      rules: {
+          name: [
+            { validator: checkName, trigger: 'blur' }
+          ],
+          url: [
+            { validator: checkUrl, trigger: 'blur' }
+          ]
+        }
     }
   },
   created:function(){
