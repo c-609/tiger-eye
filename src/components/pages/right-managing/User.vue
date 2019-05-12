@@ -2,7 +2,7 @@
   <div>
     <el-row>
       <el-col :span="4">
-        <user-dept-tree style="margin-right:20px"></user-dept-tree>
+        <user-dept-tree style="margin-right:20px" ></user-dept-tree>
       </el-col>
       <el-col :span="20">
         <add-user
@@ -11,7 +11,7 @@
           style="float:left">
         </add-user>
         <TableSearch :tableData="users"></TableSearch>
-        <user-table :header="header" ></user-table>
+        <user-table :header="header" :roles="roles" ></user-table>
       </el-col>
       
     </el-row>
@@ -52,7 +52,6 @@ export default {
   mounted:function(){
     getUserList().then((res)=>{
       this.users=res.data.data;
-      console.log(res);
     });
     getRoleList().then((data)=>{
       this.roles=data.data.data;    

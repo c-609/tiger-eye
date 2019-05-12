@@ -23,17 +23,18 @@ export default {
     data(){
         return{
             header:[   
-                {label:'角色姓名' ,prop:'name'},
-                {label:'角色标识' ,prop:'nameZh'},
+                {label:'角色标识' ,prop:'name'},
+                {label:'角色描述' ,prop:'nameZh'},
                 {label:'操作', prop: 'operate',width:'200px',fixed:'right'}
             ],
             roles:[],
         }
     },
     created:function(){
-        getRole().then(data=>{
-        this.roles=data.data.data;
+        getRole().then(res=>{
+          this.roles=res.data.data;
         })
+        
     }
 }
 </script>

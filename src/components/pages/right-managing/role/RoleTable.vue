@@ -30,7 +30,33 @@
       </el-table-column>   
     </el-table>
 
-    <role-form :show.sync="addRoleForm"></role-form>
+    <el-dialog title="编辑角色" :visible.sync="isAddRoleForm" @close="closeEditDialog">
+      <el-form :model="roleForm" status-icon :rules="rules" ref="roleForm" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="角色标识" prop="role" >
+          <el-input type="text" v-model="roleForm.role" disabled autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="角色描述" prop="roleZh">
+          <el-input type="text" v-model="roleForm.roleZh" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="数据权限" prop="auth">
+          <el-tree
+            :data="deptData" 
+            :props="deptProps" 
+            ref="deptData"
+            show-checkbox
+            check-strictly=true
+            node-key="id"
+            :default-expand-all="true"
+            :default-checked-keys="defaultCheckedKeys"
+             >
+          </el-tree>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm(roleForm)">提交</el-button>
+          <el-button @click="resetForm(roleForm)">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
 
     <el-dialog
       title="修改权限"
@@ -68,13 +94,15 @@
 
 
 <script>
-import {deleteRole, getRightTree, getRoleRight, updateRoleRight} from './../../../../api/right-managing/role.js'
+import {deleteRole, getRightTree, getRoleRight, updateRoleRight, getRoleDept, updateRole,updateRoleDept} from './../../../../api/right-managing/role.js'
 import eventBus from './../../../../utils/eventBus.js';
-import RoleForm  from './RoleForm'
+import EditRoleForm  from './EditRoleForm'
+import BaseTreeSelect from './../../../common/BaseTreeSelect'
+import {getDeptTree} from './../../../../api/right-managing/dept.js'
   export default {
     name: 'BasicTable',
     props: ['header'],
-    components: {RoleForm},
+    components: {EditRoleForm, BaseTreeSelect},
     inject:['reload'],
     created:function(){
       eventBus.$on('Ta',(data)=>{
@@ -83,6 +111,9 @@ import RoleForm  from './RoleForm'
       getRightTree().then(res=>{
         this.menuData = res.data.data;
       })
+      getDeptTree().then(res=>{
+          this.deptData = res.data.data;
+        });
     },
      data() {
       return { 
@@ -91,7 +122,19 @@ import RoleForm  from './RoleForm'
         pagesize: 8,
 		    currpage: 1,
         dialogTransferVisible: false,
-        addRoleForm: false,
+        deptData: [],
+        deptProps: {
+          value: 'id',
+          label: 'name',
+          children: 'children'
+        },
+        defaultCheckedKeys: [],
+        roleForm: {
+          id: '',
+          role:'',
+          roleZh: ''
+        },
+        isAddRoleForm: false,
         data:{
           rid:'',
           mids:''
@@ -123,57 +166,99 @@ import RoleForm  from './RoleForm'
 				},
 				handleSizeChange(psize) {
 					this.pagesize = psize;
-				},
-      handleEdit(row){
-        this.addRoleForm = true;
-      },
-      handleDelete(id) {
+        },
+
+        //编辑
+        closeEditDialog(){
+          this.$refs.deptData.setCheckedKeys([]);  
+        },
+        handleEdit(row){
+          this.roles = row;
+          this.roleForm.id = row.id;
+          this.roleForm.role = row.name;
+          this.roleForm.roleZh = row.nameZh;
+          getRoleDept(row.id).then(res=>{        
+            this.defaultCheckedKeys = res.data.data;
+          });
+          this.isAddRoleForm = true;
+        },
+        submitForm(roleForm){
           var _this = this;
-          this.$confirm('是否删除此角色?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            deleteRole(id).then(res=>{
-              if(status!=200){
-                _this.$message({
-                   type:'info',
-                   message:'删除成功' 
-                })
-              }
-            })
-            this.reload();
-          }).catch(() => {
-            _this.$message({
-              type: 'info',
-              message: '取消'
+          updateRole(roleForm.id, roleForm.role, roleForm.roleZh).then((res)=>{
+            if(status!=200){
+              _this.$message({
+                type:'success',
+                message:'修改成功' 
+              })
+              _this.reload();
+            } else{
+              _this.$message({
+                    type:'success',
+                    message:'修改失败' 
+                  })
+            }   
+          })
+          var d = this.$refs.deptData.getCheckedKeys();
+          var deptIds = d.join(",")
+          updateRoleDept(roleForm.id,deptIds).then((res)=>{
+           console.log(res)
+          })
+          this.isAddRoleForm = false;
+        },
+        resetForm(roleForm){
+          this.isAddRoleForm = false;
+        },
+
+        //删除
+        handleDelete(id) {
+            var _this = this;
+            this.$confirm('是否删除此角色?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              deleteRole(id).then(res=>{
+                if(status!=200){
+                  _this.$message({
+                    type:'info',
+                    message:'删除成功' 
+                  })
+                }
+              })
+              this.reload();
+            }).catch(() => {
+              _this.$message({
+                type: 'info',
+                message: '取消'
+              });
             });
-          });
-      },
-      closeDialog(){
-        this.$refs.menuData.setCheckedKeys([]);  
-      },
-      handleEditRirhts(row){
-        this.dialogTransferVisible=true;
-        this.rid = row.id;     
-        getRoleRight(this.rid).then(res=>{     
-          this.defaultChecked = res.data.data ;
-        }) 
-      },
-      handleDialogSure(){
-        var m = this.$refs.menuData.getCheckedKeys().concat(this.$refs.menuData.getHalfCheckedKeys());
-        var mids = m.join(",")
-        var _this = this;
-        updateRoleRight(this.rid, mids).then((res)=>{
-          if(status!=200){
-                _this.$message({
-                   type:'success',
-                   message:'修改成功' 
-                })
-              }    
-          });
-        this.dialogTransferVisible=false;
-      }  
+        },
+
+        //修改权限
+        closeDialog(){
+          this.$refs.menuData.setCheckedKeys([]);  
+        },
+        handleEditRirhts(row){
+          this.dialogTransferVisible=true;
+          this.rid = row.id;     
+          getRoleRight(this.rid).then(res=>{     
+            this.defaultChecked = res.data.data ;
+          }) 
+        },
+        handleDialogSure(){
+          var m = this.$refs.menuData.getCheckedKeys().concat(this.$refs.menuData.getHalfCheckedKeys());
+          var mids = m.join(",")
+          var _this = this;
+          updateRoleRight(this.rid, mids).then((res)=>{
+            if(status!=200){
+                  _this.$message({
+                    type:'success',
+                    message:'修改成功' 
+                  })
+                }    
+            });
+          this.dialogTransferVisible=false;
+        }  
     },
   }
 </script>

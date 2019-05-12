@@ -43,3 +43,13 @@ export function getUserMenuTree (uid) {
   })
 }
 
+//根据部门id获取用户列表
+export function getListByDeptId (deptId) {
+  return request ({
+    url: '/upms/user/getListByDeptId',
+    method: 'get',
+    params: {deptId}
+  })
+}
+
+

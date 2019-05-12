@@ -64,16 +64,14 @@
           <base-tree-select
             :data="deptData"
             :defaultProps="deptProps" 
-        
+
             :nodeKey="nodeKey" 
             :checkedKeys="defaultCheckedKeys"
             @popoverHide="popoverHide" >
           </base-tree-select>
         </el-form-item>
         <el-form-item label="角色标识"  :label-width="formLabelWidth">
-          <el-checkbox v-model="form.admin">ROLE_admin</el-checkbox>
-          <el-checkbox v-model="form.superuser">ROLE_superuser</el-checkbox>
-          <el-checkbox v-model="form.user">ROLE_user</el-checkbox>
+         <el-checkbox v-for="(item,index) in roles" :key="index" v-model="item.name">{{item.nameZh}}</el-checkbox>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -144,7 +142,7 @@ import {getDeptTree} from './../../../../api/right-managing/dept.js'
         dialogTransferVisible: false,
       }
     },
-    props: ['header'],
+    props: ['header','roles'],
     computed:{
         TablesChange(){
           return this.Tables;

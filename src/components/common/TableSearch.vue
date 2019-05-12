@@ -19,6 +19,12 @@ export default {
             search: '',
         }
     },
+     created:function(){
+        eventBus.$on('tableData',res=>{
+            this.tableData=res.data.data
+        })
+    },
+
     computed: {
         tables () {
         const search = this.search

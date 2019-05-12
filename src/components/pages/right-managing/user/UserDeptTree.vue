@@ -6,6 +6,7 @@
       :data="deptData" 
       :props="deptProps" 
       @node-click="getNodeData"
+      :expand-on-click-node="false"
       :render-content="renderContent"
       default-expand-all
       >  
@@ -15,6 +16,8 @@
 
 <script>
 import {getDeptTree} from './../../../../api/right-managing/dept.js'
+import {getListByDeptId} from './../../../../api/right-managing/user.js'
+import eventBus from './../../../../utils/eventBus.js'
 export default {
   name: 'UserDeptTree',
   data(){
@@ -27,7 +30,14 @@ export default {
     }
   },
   methods: {
-
+    getNodeData(data){
+      getListByDeptId(data.id).then(res=>{
+        eventBus.$emit('tableData',res)
+      })
+    }
+    // renderContent(data){
+    //   console.log(data)
+    // }
   },
   created:function(){
     getDeptTree().then(res=>{
