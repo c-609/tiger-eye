@@ -36,7 +36,7 @@ export function updateRole(id, name,nameZh) {
 //为角色的部门授权
 export function updateRoleDept(rid,deptIds) {
   return request({
-    url: '/upms/role/update',
+    url: '/upms/role/deptAuthForRole',
     method: 'post',
     params: {rid,deptIds}
   })
