@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row>
+    <el-row class="user-table">
       <el-col :span="4">
         <user-dept-tree style="margin-right:20px" ></user-dept-tree>
       </el-col>
@@ -11,6 +11,7 @@
           style="float:left">
         </add-user>
         <TableSearch :tableData="users"></TableSearch>
+        <i class="el-icon-refresh refresh" @click="refresh"></i>
         <user-table :header="header" :roles="roles" ></user-table>
       </el-col>
       
@@ -27,7 +28,7 @@ import AddUser from './user/AddUser'
 import TableSearch from './../../common/TableSearch'
 export default {
   name: 'User',
-
+  inject:['reload'],
   components: {
     UserTable,
     AddUser,
@@ -43,7 +44,8 @@ export default {
         //  o:表示单个数值  1：表示多个数值 数组
         {label:'账号' ,prop:'username',type:0},
         {label:'用户角色' ,prop:'roles',type:1},
-        // {label:'部门'，prop:}
+        {label:'部门',prop:'depts',type:0},
+        {label:'状态',prop:'status',type:0},
         {label: '操作', prop:'operate',width:'200px',fixed:'right'}
       ],
     }
@@ -57,10 +59,21 @@ export default {
       this.roles=data.data.data;    
     });
   },
+  
+  methods:{
+    refresh(){
+      this.reload();
+    }
+  }
 
 }
 </script>
 
 <style>
+.user-table .refresh{
+  font-size: 25px;
+  float: right;
+  color: #409EFF;
+}
 
 </style>

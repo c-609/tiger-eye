@@ -13,8 +13,11 @@
         <el-form-item label="确认密码" prop="passWord2">
           <el-input type="password" v-model="userForm.passWord2" autocomplete="off"></el-input>
         </el-form-item>
+        <!-- <el-form-item label="所属部门" prop="dept">
+          <el-input type="text" v-model="userForm.dept" autocomplete="off"  v-on:click.native="deptTreeVisible='true'"></el-input>
+        </el-form-item> -->
         <el-form-item label="角色标识" prop="roles">
-          <el-checkbox v-for="(item,index) in roles" :key="index" v-model="item.name">{{item.nameZh}}</el-checkbox>
+          <el-checkbox v-for="(item,index) in roles" :key="index" v-model="item.name" >{{item.nameZh}}</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('userForm')">提交</el-button>
@@ -22,10 +25,25 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+
+    <!-- <el-dialog :visible.sync="deptTreeVisible"  @close="closedeptTree">
+      <el-tree 
+        node-key="id"
+        highlight-current
+        :data="deptData" 
+        :props="deptProps" 
+        @node-click="handleNodeClick"
+        :expand-on-click-node="false"
+        :render-content="renderContent"
+        default-expand-all
+        >  
+      </el-tree>
+    </el-dialog> -->
   </div>
 </template>
 
 <script>
+import {getDeptTree} from './../../../../api/right-managing/dept.js'
 import {addUser} from '../../../../api/right-managing/user.js'
 export default {
      props:{
@@ -36,7 +54,12 @@ export default {
           type:Array
       } 
      },
-      inject:['reload'],
+    inject:['reload'],
+    created:function(){
+      getDeptTree().then(res=>{
+        this.deptData = res.data.data;
+      })
+    },
     data() {
       var i=0;
       var validateAcount = (rule, value, callback) => {
@@ -74,16 +97,30 @@ export default {
           callback();
         }
       };
+      // var validateDept = (rule, value, callback) => {
+      //   if (value === '') {
+      //     callback(new Error('请选择部门'));
+      //   } else {
+      //     callback();
+      //   }
+      // };
       return {
+        deptTreeVisible:false,
         userFormVisible: false,
         formLabelWidth: '120px',
         userForm: {
           account:'',
           passWord1:'',
           passWord2: '',
+          dept: '',
           admin:'',
           superuser:'',
           user:''
+        },
+        deptData: '',
+        deptProps: {
+          label: 'name',
+          children: 'children'
         },
         rules2: {
           account: [
@@ -94,15 +131,23 @@ export default {
           ],
           passWord1: [
             { validator: validatePass, trigger: 'blur' }
-          ]
+          ],
+          // dept: [
+          //   { validator: validateDept, trigger: 'blur' }
+          // ]
         }
       };
     },
     methods: {
+      closedeptTree(){
+        this.deptTreeVisible = false;
+      },
+      handleNodeClick(data){
+        this.userForm.dept = data.name;
+        this.deptTreeVisible = false;
+      },
       closeDialog(){
-        this.userForm.account= '';//清空数据
-        this.userForm.passWord1 = '';
-        this.userForm.passWord2 = '';
+        this.resetForm('userForm');
       },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
@@ -121,8 +166,13 @@ export default {
               .then(res=>{
                 console.log(res);
                 this.reload();
-                if( res && res.data.data.data == 1 ){
-                    alert("添加成功！")
+                if( res && res.data.data != 0 ){
+                  this.$message({
+                    type: 'success',
+                    message: '添加用户成功'
+                  });
+                }else{
+                   this.$message.error('添加失败');
                 }
               }); 
               this.userFormVisible = false;
@@ -132,8 +182,11 @@ export default {
         });
       },
       resetForm(formName) {
-        
         this.$refs[formName].resetFields();
+        this.userForm.account= '';//清空数据
+        this.userForm.passWord1 = '';
+        this.userForm.passWord2 = '';
+        this.userForm.dept = '';
       }
     }
   }

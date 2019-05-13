@@ -21,11 +21,20 @@
         :width="item.width"
         :fixed="item.fixed">
         <template slot-scope="scope">
-          <div v-if="item.type==1">
+          <div v-if="item.label=='部门'">
+            <div v-for="(i,index) in scope.row[item.prop]" :key="index">
+                {{scope.row[item.prop][index].name}}
+            </div>
+          </div>
+          <div v-else-if="item.type==1">
             <div v-for="(i,index) in scope.row[item.prop]" :key="index">
                 {{scope.row[item.prop][index].nameZh}}
             </div>
             </div> 
+          <div v-else-if="item.label=='状态'">
+              <div v-if="scope.row[item.prop]==0">有效</div>
+              <div v-if="scope.row[item.prop]==1">锁定</div>
+          </div>
           <div v-else>{{scope.row[item.prop]}}</div> 
           
           <el-button @click="handleView(scope.row.id)" type="text" size="small" v-if="item.prop=='operate'">查看</el-button>
@@ -162,7 +171,6 @@ import {getDeptTree} from './../../../../api/right-managing/dept.js'
 				},
         handleDelete(id) {
           var _this = this;
-          alert(id)
           this.$confirm('是否删除此用户?', '提示', {
             confirmButtonText: '确定',
             type: 'warning'
