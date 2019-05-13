@@ -9,25 +9,25 @@
         <el-input v-model="form.id" placeholder="请输入节点ID" :disabled="formEdit"></el-input>
       </el-form-item>
       <div v-if="formStatus==''">
-      <el-form-item label=标题 prop="name">
+      <el-form-item label=标题 prop="name" :rules="[{required:true, validator:checkName, trigger:'blur'}]">
         <el-input v-model="form.name"  placeholder="请输入标题" :disabled="formEdit"></el-input>
       </el-form-item>
       </div>
       <div v-else-if="formStatus=='edit'">
-      <el-form-item label=标题 prop="name">
+      <el-form-item label=标题 prop="name" :rules="[{required:true, validator:checkName, trigger:'blur'}]">
         <el-input v-model="form.name"  placeholder="请输入标题" :disabled="formEdit"></el-input>
       </el-form-item>
       </div>
       <div v-else>
-      <el-form-item label=标题 prop="name">
-        <el-input v-model="form.name"  placeholder="请输入标题" :disabled="formEdit"></el-input>
+      <el-form-item label=标题 prop="name" :rules="[{required:true, validator:checkName, trigger:'blur'}]">
+        <el-input v-model="form.name"  placeholder="请输入标题" :disabled="formEdit" ></el-input>
       </el-form-item>
       </div>
       <!-- <el-form-item label=标题 prop="name">
         <el-input v-model="form.name"  placeholder="请输入标题" :disabled="formEdit"></el-input>
       </el-form-item> -->
       <div v-if="formStatus=='add'">
-        <el-form-item label="请求地址" prop="url" >
+        <el-form-item label="请求地址" prop="url" :rules="[{required:true, validator:checkUrl, trigger:'blur'}]">
         <el-input v-model="form.url"  placeholder="请求地址" :disabled="formEdit"></el-input>
       </el-form-item>
       </div>
@@ -98,14 +98,14 @@ export default {
       //     name: [
       //       { validator: checkName, trigger: 'blur' }
       //     ],
-      //     url: [
-      //       { validator: checkUrl, trigger: 'blur' }
-      //     ]
+      //     // url: [
+      //     //   { validator: checkUrl, trigger: 'blur' }
+      //     // ]
       //   }
-      rules:{
-        name: [{ required:true,message:'标题不能为空', trigger: 'blur' }],
-        url: [{ required:true,message:'地址不能为空', trigger: 'blur' }],
-      }
+      // rules:{
+      //   name: [{ required:true,message:'标题不能为空', trigger: 'blur' }],
+      //   // url: [{ required:true,message:'地址不能为空', trigger: 'blur' }],
+      // }
 
     }
   },
@@ -122,6 +122,20 @@ export default {
       })
   },
   methods:{
+    checkUrl(rule, value, callback) {
+      if (!value) {
+        callback(new Error('请求地址不能为空'));
+      }else{
+        callback();
+      }
+    },
+    checkName (rule, value, callback) {alert("3")
+      if (!this.form.name) {
+        callback(new Error('标题不能为空'));
+      }else{
+        callback()
+      }
+    },
     addMenu(){
       eventBus.$on("addMenuNode",(formAdd,formStatus,node)=>{
         this.formStatus = formStatus;
