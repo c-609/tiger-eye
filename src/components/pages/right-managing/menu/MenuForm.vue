@@ -5,40 +5,19 @@
       <el-form-item label="父级节点" prop="parentId">
         <el-input v-model="form.parentId" :disabled="true"></el-input>
       </el-form-item>
-      <el-form-item label="节点ID" prop="id" v-if="formStatus!='add'">
+      <div v-if="formStatus==''||formStatus=='edit'||formStatus=='add'">
+        <el-form-item label=标题 prop="name" :rules="[{required:true, validator:checkName, trigger:'blur'}]">
+          <el-input v-model="form.name"  placeholder="请输入标题" :disabled="formEdit"></el-input>
+        </el-form-item>
+      </div>
+      <el-form-item label="节点ID" prop="id" v-if="formStatus!='add'" :rules="[{required:true, validator:checkId, trigger:'blur'}]">
         <el-input v-model="form.id" placeholder="请输入节点ID" :disabled="formEdit"></el-input>
       </el-form-item>
-      <div v-if="formStatus==''">
-      <el-form-item label=标题 prop="name" :rules="[{required:true, validator:checkName, trigger:'blur'}]">
-        <el-input v-model="form.name"  placeholder="请输入标题" :disabled="formEdit"></el-input>
-      </el-form-item>
-      </div>
-      <div v-else-if="formStatus=='edit'">
-      <el-form-item label=标题 prop="name" :rules="[{required:true, validator:checkName, trigger:'blur'}]">
-        <el-input v-model="form.name"  placeholder="请输入标题" :disabled="formEdit"></el-input>
-      </el-form-item>
-      </div>
-      <div v-else>
-      <el-form-item label=标题 prop="name" :rules="[{required:true, validator:checkName, trigger:'blur'}]">
-        <el-input v-model="form.name"  placeholder="请输入标题" :disabled="formEdit" ></el-input>
-      </el-form-item>
-      </div>
-      <!-- <el-form-item label=标题 prop="name">
-        <el-input v-model="form.name"  placeholder="请输入标题" :disabled="formEdit"></el-input>
-      </el-form-item> -->
       <div v-if="formStatus=='add'">
         <el-form-item label="请求地址" prop="url" :rules="[{required:true, validator:checkUrl, trigger:'blur'}]">
-        <el-input v-model="form.url"  placeholder="请求地址" :disabled="formEdit"></el-input>
-      </el-form-item>
+          <el-input v-model="form.url"  placeholder="请求地址" :disabled="formEdit"></el-input>
+        </el-form-item>
       </div>
-      
-      <!-- <el-form-item label="类型">
-        <el-select v-model="form.type" placeholder="请选择资源请求类型" :disabled="formEdit">
-        <el-option>
-        </el-option>
-      </el-select>
-      </el-form-item> -->
-
       <el-form-item label="前端组件" prop="component" v-if="formStatus!='add'">
         <el-input v-model="form.component" placeholder="请输入描述" :disabled="formEdit"></el-input>
       </el-form-item>
@@ -67,16 +46,6 @@ export default {
   name: 'MenuForm',
   inject:['reload'],
   data(){
-    var checkName = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('标题不能为空'));
-      }
-    };
-    var checkUrl = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请求地址不能为空'));
-      }
-    };
     return { 
       formStatus:'',
       formEdit:true,
@@ -122,6 +91,13 @@ export default {
       })
   },
   methods:{
+    checkId(rule, value, callback) {
+      if (!value) {
+        callback(new Error('节点id不能为空'));
+      }else{
+        callback();
+      }
+    },
     checkUrl(rule, value, callback) {
       if (!value) {
         callback(new Error('请求地址不能为空'));
@@ -129,7 +105,7 @@ export default {
         callback();
       }
     },
-    checkName (rule, value, callback) {alert("3")
+    checkName (rule, value, callback) {
       if (!this.form.name) {
         callback(new Error('标题不能为空'));
       }else{

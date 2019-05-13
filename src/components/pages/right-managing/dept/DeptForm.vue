@@ -1,27 +1,27 @@
 <template>
   <div class="dept-form">
     <el-card>
-    <el-form label-width="100px" :model="form" :rules="rules" ref="ruleForm">
+    <el-form label-width="100px" :model="form" :rules="rules" ref="form">
       <el-form-item label="父级节点" prop="parentId">
         <el-input v-model="form.parentId" :disabled="formEdit"></el-input>
       </el-form-item>
+      <el-form-item label=部门名称 prop="name" >
+        <el-input v-model="form.name"  placeholder="请输入部门名称" :disabled="formEdit" ></el-input>
+      </el-form-item>
       <el-form-item label="节点ID" prop="id" v-if="formStatus!='add'">
         <el-input v-model="form.id" placeholder="请输入节点ID" :disabled="true"></el-input>
-      </el-form-item>
-      <el-form-item label=部门名称 prop="name">
-        <el-input v-model="form.name"  placeholder="请输入部门名称" :disabled="formEdit"></el-input>
       </el-form-item>
       <el-form-item label="排序" prop="sort">
         <el-input v-model="form.sort"  placeholder="请输入排序" :disabled="formEdit"></el-input>
       </el-form-item>
 
       <el-form-item style="float:left" v-if="formStatus=='add'">
-        <el-button type="primary" size="small" @click="addSave">保存</el-button>
-        <el-button size="small" @click="cancelButton">取消</el-button>
+        <el-button type="primary" size="small" @click="addSave('form')">保存</el-button>
+        <el-button size="small" @click="cancelButton('form')">取消</el-button>
       </el-form-item>
       <el-form-item style="float:left" v-if="formStatus=='edit'">
-        <el-button type="primary" size="small" @click="editUpdate">更新</el-button>
-        <el-button size="small" @click="cancelButton">取消</el-button>
+        <el-button type="primary" size="small" @click="editUpdate('form')">更新</el-button>
+        <el-button size="small" @click="cancelButton('form')">取消</el-button>
       </el-form-item>
 
     </el-form>
@@ -36,6 +36,20 @@ export default {
   name: 'DeptForm',
   inject:['reload'],
   data(){
+    var checkParentId = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('父级节点不能为空'));
+        } else {
+          callback();
+        }
+    };
+    var checkName = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('部门名称不能为空'));
+        } else {
+          callback();
+        }
+    };
     return {
       formStatus:'',
       formEdit:true,
@@ -47,6 +61,14 @@ export default {
           parentId: undefined,
           sort: undefined,
         },
+      rules: {
+        parentId: [
+            {required:true, validator: checkParentId, trigger: 'blur' }
+          ],
+        name: [
+          { required:true, validator: checkName, trigger: 'blur' }
+        ]
+      }
     }
   },
   created:function(){
@@ -54,7 +76,6 @@ export default {
     this.addButton();
     this.nodeEdit();
     eventBus.$on("getDeptNodeData",(form)=>{
-      //  alert("1234")
         this.addParentId = form.id;
         this.form = form;
         this.formStatus='';
@@ -66,6 +87,7 @@ export default {
     eventBus.$off('getDeptNodeData' );
   },
   methods:{
+    
     addDept(){
       eventBus.$on("addDeptNode",(formAdd,formStatus,node)=>{
       
@@ -88,21 +110,32 @@ export default {
         this.formStatus = 'edit'
       })
     },
-    addSave(){
-      addDept(this.form.name, this.form.parentId)
-        .then(res=>{
-          this.reload();
-        })
+    addSave(formName){
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          addDept(this.form.name, this.form.parentId).then(res=>{
+            this.reload();
+          })
+        } else {
+          return false;
+        }
+      });
     },
-    editUpdate(){
-      updateDept(this.form.id,this.form.name, this.form.parentId)
-        .then(res=>{
-          this.reload();
-        })
+    editUpdate(formName){
+      this.$refs[formName].validate((valid)=>{
+        if(valid){
+          updateDept(this.form.id,this.form.name, this.form.parentId).then(res=>{
+            this.reload();
+          })
+        }else{
+          return false;
+        }
+      }) 
     },
-    cancelButton(){
-     this.formEdit = true;
-     this.formStatus = '';
+    cancelButton(formName){
+      this.formEdit = true;
+      this.formStatus = '';  
+      this.$refs[formName].resetFields();
     },
      resetForm() { 
       this.form = {

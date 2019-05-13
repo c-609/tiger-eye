@@ -73,8 +73,7 @@
           <base-tree-select
             :data="deptData"
             :defaultProps="deptProps" 
-
-            :nodeKey="nodeKey" 
+            :nodeKey="id" 
             :checkedKeys="defaultCheckedKeys"
             @popoverHide="popoverHide" >
           </base-tree-select>
@@ -163,6 +162,10 @@ import {getDeptTree} from './../../../../api/right-managing/dept.js'
         }
     },
      methods: {
+       popoverHide (checkedIds, checkedData) {
+         console.log(checkedIds);
+         console.log(checkedData);
+      },
         handleCurrentChange(cpage) {
 					this.currpage = cpage;
 			  },
