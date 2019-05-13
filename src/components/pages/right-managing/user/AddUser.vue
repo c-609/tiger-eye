@@ -17,7 +17,10 @@
           <el-input type="text" v-model="userForm.dept" autocomplete="off"  v-on:click.native="deptTreeVisible='true'"></el-input>
         </el-form-item> -->
         <el-form-item label="角色标识" prop="roles">
-          <el-checkbox v-for="(item,index) in roles" :key="index" v-model="item.name" >{{item.nameZh}}</el-checkbox>
+          <!-- <el-checkbox v-for="(item,index) in roles" :key="index" v-model="item.name" >{{item.nameZh}}</el-checkbox> -->
+          <el-checkbox-group v-model="checkIds">
+            <el-checkbox v-for="(item,index) in roles" :key="index" :label="item.id"  >{{item.nameZh}}</el-checkbox>
+          </el-checkbox-group>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('userForm')">提交</el-button>
@@ -61,6 +64,7 @@ export default {
       })
     },
     data() {
+      
       var i=0;
       var validateAcount = (rule, value, callback) => {
         if (value === '') {
@@ -105,6 +109,7 @@ export default {
       //   }
       // };
       return {
+        checkIds:[],
         deptTreeVisible:false,
         userFormVisible: false,
         formLabelWidth: '120px',
@@ -152,16 +157,16 @@ export default {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            const roles = [];
-            var j=0;
-            var i;
-            for(i=0;i<this.roles.length;i++){
-              if(this.roles[i].name==true){
-                roles[j]=this.roles[i].id;
-                j++;
-              }
-            }
-            
+            var roles = [];
+            // var j=0;
+            // var i;
+            // for(i=0;i<this.roles.length;i++){
+            //   if(this.roles[i].name==true){
+            //     roles[j]=this.roles[i].id;
+            //     j++;
+            //   }
+            // }
+            roles =this.checkIds
             addUser( this.userForm.account, this.userForm.passWord1, roles.join(","))
               .then(res=>{
                 console.log(res);
@@ -182,6 +187,7 @@ export default {
         });
       },
       resetForm(formName) {
+
         this.$refs[formName].resetFields();
         this.userForm.account= '';//清空数据
         this.userForm.passWord1 = '';
