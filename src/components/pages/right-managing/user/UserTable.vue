@@ -33,7 +33,7 @@
             </div> 
           <div v-else-if="item.label=='状态'">
               <div v-if="scope.row[item.prop]==0">有效</div>
-              <div v-if="scope.row[item.prop]==1">锁定</div>
+              <div v-if="scope.row[item.prop]==102">锁定</div>
           </div>
           <div v-else>{{scope.row[item.prop]}}</div> 
           

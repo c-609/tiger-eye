@@ -1,19 +1,37 @@
 <template>
   <div class="menu-form">
     <el-card>
-    <el-form label-width="100px" :model="form" :rules="rules" ref="ruleForm">
+    <el-form label-width="100px" :model="form" :rules="rules" ref="form">
       <el-form-item label="父级节点" prop="parentId">
         <el-input v-model="form.parentId" :disabled="true"></el-input>
       </el-form-item>
       <el-form-item label="节点ID" prop="id" v-if="formStatus!='add'">
         <el-input v-model="form.id" placeholder="请输入节点ID" :disabled="formEdit"></el-input>
       </el-form-item>
+      <div v-if="formStatus==''">
       <el-form-item label=标题 prop="name">
         <el-input v-model="form.name"  placeholder="请输入标题" :disabled="formEdit"></el-input>
       </el-form-item>
-      <el-form-item label="请求地址" prop="url" v-if="formStatus=='add'">
+      </div>
+      <div v-else-if="formStatus=='edit'">
+      <el-form-item label=标题 prop="name">
+        <el-input v-model="form.name"  placeholder="请输入标题" :disabled="formEdit"></el-input>
+      </el-form-item>
+      </div>
+      <div v-else>
+      <el-form-item label=标题 prop="name">
+        <el-input v-model="form.name"  placeholder="请输入标题" :disabled="formEdit"></el-input>
+      </el-form-item>
+      </div>
+      <!-- <el-form-item label=标题 prop="name">
+        <el-input v-model="form.name"  placeholder="请输入标题" :disabled="formEdit"></el-input>
+      </el-form-item> -->
+      <div v-if="formStatus=='add'">
+        <el-form-item label="请求地址" prop="url" >
         <el-input v-model="form.url"  placeholder="请求地址" :disabled="formEdit"></el-input>
       </el-form-item>
+      </div>
+      
       <!-- <el-form-item label="类型">
         <el-select v-model="form.type" placeholder="请选择资源请求类型" :disabled="formEdit">
         <el-option>
@@ -29,12 +47,12 @@
       </el-form-item>
 
       <el-form-item style="float:left" v-if="formStatus=='add'">
-        <el-button type="primary" size="small" @click="addSave">保存</el-button>
-        <el-button size="small" @click="cancelButton">取消</el-button>
+        <el-button type="primary" size="small" @click="addSave('form')">保存</el-button>
+        <el-button size="small" @click="cancelButton('form')">取消</el-button>
       </el-form-item>
       <el-form-item style="float:left" v-if="formStatus=='edit'">
-        <el-button type="primary" size="small" @click="editUpdate">更新</el-button>
-        <el-button size="small" @click="cancelButton">取消</el-button>
+        <el-button type="primary" size="small" @click="editUpdate('form')">更新</el-button>
+        <el-button size="small" @click="cancelButton('form')">取消</el-button>
       </el-form-item>
 
     </el-form>
@@ -76,14 +94,19 @@ export default {
         path: undefined,
         url:undefined
       },
-      rules: {
-          name: [
-            { validator: checkName, trigger: 'blur' }
-          ],
-          url: [
-            { validator: checkUrl, trigger: 'blur' }
-          ]
-        }
+      // rules: {
+      //     name: [
+      //       { validator: checkName, trigger: 'blur' }
+      //     ],
+      //     url: [
+      //       { validator: checkUrl, trigger: 'blur' }
+      //     ]
+      //   }
+      rules:{
+        name: [{ required:true,message:'标题不能为空', trigger: 'blur' }],
+        url: [{ required:true,message:'地址不能为空', trigger: 'blur' }],
+      }
+
     }
   },
   created:function(){
@@ -120,21 +143,34 @@ export default {
         this.formStatus = 'edit'
       })
     },
-    addSave(){
-      addMenu(this.form.parentId, this.form.url, this.form.name, this.form.path)
-        .then(res=>{
-          this.reload();
-        })
+    addSave(formName){
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          addMenu(this.form.parentId, this.form.url, this.form.name, this.form.path)
+          .then(res=>{
+            this.reload();
+          })
+        } else {
+          return false;
+        }
+        });
     },
-    editUpdate(){
-      updateMenu(this.form.id, this.form.name, this.form.component, this.form.path)
-        .then(res=>{
-          this.reload();
-        })
+    editUpdate(formName){
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          updateMenu(this.form.id, this.form.name, this.form.component, this.form.path)
+          .then(res=>{
+            this.reload();
+          })
+        } else {
+          return false;
+        }
+        });
     },
-    cancelButton(){
-     this.formEdit = true;
-     this.formStatus = '';
+    cancelButton(formName){
+      this.formEdit = true;
+      this.formStatus = '';
+      this.$refs[formName].resetFields();
     },
      resetForm() { 
       this.form = {
