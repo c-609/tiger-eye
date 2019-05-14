@@ -29,6 +29,9 @@ export default {
           this.disabled = false;
     })
   },
+  beforeDestroy(){
+    eventBus.$off("deptNodeClick");
+  }
 }
 </script>
 

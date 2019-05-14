@@ -90,6 +90,12 @@ export default {
         this.formAdd=true;
       })
   },
+  beforeDestroy(){
+    eventBus.$off("addMenuNode");
+    eventBus.$off("addMenu");
+    eventBus.$off("menuNodeEdit");
+    eventBus.$off("getMenuNodeData");
+  },
   methods:{
     checkId(rule, value, callback) {
       if (!value) {

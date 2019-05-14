@@ -28,6 +28,9 @@ export default {
     eventBus.$on("menuNodeClick",(i)=>{
           this.disabled = false;
     })
+  },
+  beforeDestroy(){
+    eventBus.$off("menuNodeClick");
   }
 }
 </script>

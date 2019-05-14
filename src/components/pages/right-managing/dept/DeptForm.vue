@@ -84,7 +84,10 @@ export default {
       })
   },
   beforeDestroy() {
-    eventBus.$off('getDeptNodeData' );
+    eventBus.$off('addDeptNode');
+    eventBus.$off('addDept');
+    eventBus.$off('deptNodeEdit');
+    eventBus.$off('getDeptNodeData');
   },
   methods:{
     

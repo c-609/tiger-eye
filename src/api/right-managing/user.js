@@ -26,12 +26,24 @@ export function deleteUser(uid){
   })
 }
 
-export function updateUser(id, username){
-  return request({
-    url: '/upms/user/update',
-    method: 'post',
-    params: {"id":id, "username": username}
-  })
+export function updateUser(id, username,password,status){
+    const data = {
+      "id": id,
+      "username": username,
+      "password": password,
+      "status": status
+    }
+    return request({
+      url: '/upms/user/update',
+      method: 'post',
+      params: data,
+      transformRequest: [function(){
+        return JSON.stringify(data)
+      }],
+      headers: {
+        'Content-Type' : 'application/json;'
+      }
+    })
 }
 
 // 根据用户id 获取用户拥有的权限

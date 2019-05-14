@@ -120,6 +120,9 @@ import {getDeptTree} from './../../../../api/right-managing/dept.js'
           this.deptData = res.data.data
         })
     },
+    // beforeDestroy() {
+    //   eventBus.$off('Ta');
+    // },
     data() {
       return {
         deptData: '',

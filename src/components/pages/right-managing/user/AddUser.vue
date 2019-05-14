@@ -169,7 +169,6 @@ export default {
             roles =this.checkIds
             addUser( this.userForm.account, this.userForm.passWord1, roles.join(","))
               .then(res=>{
-                console.log(res);
                 this.reload();
                 if( res && res.data.data != 0 ){
                   this.$message({
