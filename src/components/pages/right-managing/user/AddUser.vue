@@ -22,6 +22,17 @@
             <el-checkbox v-for="(item,index) in roles" :key="index" :label="item.id"  >{{item.nameZh}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
+        <el-form-item label="用户状态"  :label-width="formLabelWidth">
+          <el-switch
+            v-model="userForm.status"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            :active-value="0"
+            :inactive-value="102"
+            active-text="有效"
+            inactive-text="锁定">
+          </el-switch>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('userForm')">提交</el-button>
           <el-button @click="resetForm('userForm')">重置</el-button> 
@@ -120,7 +131,8 @@ export default {
           dept: '',
           admin:'',
           superuser:'',
-          user:''
+          user:'',
+          status: 0,
         },
         deptData: '',
         deptProps: {
@@ -158,16 +170,8 @@ export default {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             var roles = [];
-            // var j=0;
-            // var i;
-            // for(i=0;i<this.roles.length;i++){
-            //   if(this.roles[i].name==true){
-            //     roles[j]=this.roles[i].id;
-            //     j++;
-            //   }
-            // }
             roles =this.checkIds
-            addUser( this.userForm.account, this.userForm.passWord1, roles.join(","))
+            addUser( this.userForm.account, this.userForm.passWord1,this.userForm.status, roles.join(","))
               .then(res=>{
                 this.reload();
                 if( res && res.data.data != 0 ){

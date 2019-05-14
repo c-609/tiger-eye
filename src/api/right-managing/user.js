@@ -9,12 +9,28 @@ export function getUserList(){
 }
 
 //添加用户
-export function addUser (username,password,rids) {
+export function addUser (username,password,status,rids) {
+  const data = {
+    "username": username,
+    "password": password,
+    "status": status,
+  }
   return request({
     url: '/upms/user/add',
     method: 'post',
-    params:{username,password,rids}
+    params: {data,rids},
+    transformRequest: [function(){
+      return JSON.stringify(data)
+    }],
+    headers: {
+      'Content-Type' : 'application/json;'
+    }
   })
+  // return request({
+  //   url: '/upms/user/add',
+  //   method: 'post',
+  //   params:{username,password,rids}
+  // })
 }
 
 //删除用户
@@ -26,17 +42,17 @@ export function deleteUser(uid){
   })
 }
 
-export function updateUser(id, username,password,status){
+export function updateUser(id, username,password,status,roleIds){
     const data = {
       "id": id,
       "username": username,
       "password": password,
-      "status": status
+      "status": status,
     }
     return request({
       url: '/upms/user/update',
       method: 'post',
-      params: data,
+      params: {data,roleIds},
       transformRequest: [function(){
         return JSON.stringify(data)
       }],

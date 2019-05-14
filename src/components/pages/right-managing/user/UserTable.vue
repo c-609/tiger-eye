@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="user-table">
     <el-table
      ref="dormitoryTable"
       :data="Tables.slice((currpage - 1) * pagesize, currpage * pagesize)"
@@ -79,7 +79,20 @@
           </base-tree-select>
         </el-form-item>
         <el-form-item label="角色标识"  :label-width="formLabelWidth">
-         <el-checkbox v-for="(item,index) in roles" :key="index" v-model="item.name">{{item.nameZh}}</el-checkbox>
+          <el-checkbox-group v-model="checkIds">
+            <el-checkbox v-for="(item,index) in roles" :key="index" :label="item.id"  >{{item.nameZh}}</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+        <el-form-item label="用户状态"  :label-width="formLabelWidth">
+          <el-switch
+            v-model="form.status"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            :active-value="0"
+            :inactive-value="102"
+            active-text="有效"
+            inactive-text="锁定">
+          </el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -137,6 +150,7 @@ import {getDeptTree} from './../../../../api/right-managing/dept.js'
 				currpage: 1,
         dialogFormVisible: false,
         formLabelWidth: '120px',
+        checkIds:[],
         form:{
           id:'',
           username:'',
@@ -144,6 +158,7 @@ import {getDeptTree} from './../../../../api/right-managing/dept.js'
           admin:'',
           superuser:'',
           user:'',
+          status: '',
         },
         menuProps:{
           label: 'name',
@@ -201,9 +216,12 @@ import {getDeptTree} from './../../../../api/right-managing/dept.js'
           this.dialogFormVisible=true;
           this.form.username=row.username;
           this.form.id=row.id;
+          this.form.status=row.status;
       },
       handleDialogSure(){
-        updateUser(this.form.id, this.form.username).then(res=>{
+        var roles = [];
+        roles =this.checkIds.join(",");
+        updateUser(this.form.id, this.form.username,this.form.password,this.form.status,roles).then(res=>{
           this.reload();
           });
           this.dialogFormVisible=false;
@@ -219,6 +237,12 @@ import {getDeptTree} from './../../../../api/right-managing/dept.js'
 </script>
 
 <style type="text/css" >
+.user-table .el-switch{
+  float:left;
+  display: block;
+  margin-left:35px;
+  margin-top: 8px;
+} 
 .el-pagination{
 		text-align: right;
     margin-top:20px;
