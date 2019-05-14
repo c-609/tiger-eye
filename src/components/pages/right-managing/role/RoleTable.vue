@@ -52,8 +52,8 @@
           </el-tree>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm(roleForm)">提交</el-button>
-          <el-button @click="resetForm(roleForm)">取消</el-button>
+          <el-button type="primary" @click="submitForm('roleForm')">提交</el-button>
+          <el-button @click="resetForm('roleForm')">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -119,7 +119,17 @@ import {getDeptTree} from './../../../../api/right-managing/dept.js'
     //   eventBus.$off('Ta');
     // },
      data() {
+      var checkRoleZh = (rule, value, callback)=>{
+        if(!value){
+          callback(new Error('角色描述不能为空'))
+        }else{
+          callback()
+        }
+      };
       return { 
+        rules:{
+          roleZh:[{validator: checkRoleZh, trigger: 'blur'}]
+        },
         Tables:[],
         search: '',   
         pagesize: 8,
@@ -174,6 +184,7 @@ import {getDeptTree} from './../../../../api/right-managing/dept.js'
         //编辑
         closeEditDialog(){
           this.$refs.deptData.setCheckedKeys([]);  
+          this.$refs.roleForm.resetFields();
         },
         handleEdit(row){
           this.roles = row;
@@ -187,28 +198,38 @@ import {getDeptTree} from './../../../../api/right-managing/dept.js'
         },
         submitForm(roleForm){
           var _this = this;
-          updateRole(roleForm.id, roleForm.role, roleForm.roleZh).then((res)=>{
-            if(status!=200){
-              _this.$message({
-                type:'success',
-                message:'修改成功' 
-              })
-              _this.reload();
-            } else{
-              _this.$message({
+          this.$refs[roleForm].validate((valid)=>{
+            if(valid){
+              updateRole(this.roleForm.id, this.roleForm.role, this.roleForm.roleZh).then((res)=>{
+                console.log(res)
+                if(status!=200){
+                  _this.$message({
                     type:'success',
-                    message:'修改失败' 
+                    message:'修改成功' 
                   })
-            }   
-          })
-          var d = this.$refs.deptData.getCheckedKeys();
-          var deptIds = d.join(",")
-          updateRoleDept(roleForm.id,deptIds).then((res)=>{
-           console.log(res)
-          })
-          this.isAddRoleForm = false;
+                  _this.reload();
+                } else{
+                  _this.$message({
+                        type:'success',
+                        message:'修改失败' 
+                      })
+                }   
+              })
+              var d = this.$refs.deptData.getCheckedKeys();
+              var deptIds = d.join(",")
+              console.log(this.roleForm.id)
+              updateRoleDept(this.roleForm.id,deptIds).then((res)=>{
+                
+                console.log(res)
+              })
+              this.isAddRoleForm = false;
+                }else{
+                  return false;
+              }
+              })          
         },
-        resetForm(roleForm){
+        resetForm(formName){
+          this.$refs[formName].resetFields();
           this.isAddRoleForm = false;
         },
 

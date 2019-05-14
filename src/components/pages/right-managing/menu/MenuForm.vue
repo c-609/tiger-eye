@@ -1,7 +1,7 @@
 <template>
   <div class="menu-form">
     <el-card>
-    <el-form label-width="100px" :model="form" :rules="rules" ref="form">
+    <el-form label-width="100px" :model="form" ref="form">
       <el-form-item label="父级节点" prop="parentId">
         <el-input v-model="form.parentId" :disabled="true"></el-input>
       </el-form-item>
