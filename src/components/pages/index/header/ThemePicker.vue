@@ -39,7 +39,12 @@ export default {
     }
   },
   created(){
-    this.default= ""+localStorage.getItem("tremePackers")+""
+    if(localStorage.getItem("tremePackers") == null){
+      this.default = '#409EFF';
+    }else{
+      this.default= ""+localStorage.getItem("tremePackers")+""
+    }
+
   },
      
 

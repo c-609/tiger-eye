@@ -20,9 +20,9 @@
       <el-input type="password" v-model="loginForm.pass" prefix-icon="el-icon-umplock--line"
                 auto-complete="off" placeholder="密码"></el-input>
     </el-form-item>
-    <el-form-item prop="passcode" >
+    <el-form-item prop="passcode" class="pass-code">
         
-       <div >
+       <div>
             <el-input class="passcode" type="text" v-model="loginForm.passcode" 
                     auto-complete="off" placeholder="验证码" prefix-icon="el-icon-umpyanzhengma">
             </el-input>

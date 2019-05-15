@@ -62,7 +62,7 @@
       :visible.sync="dialogFormVisible"
       @close='closeDialog'
       >
-      <el-form :model="form" label-position="right">
+      <el-form :model="form" label-position="right" ref="form">
         <el-form-item label="账号" :label-width="formLabelWidth" >
           <el-input v-model="form.username" autocomplete="off" :disabled="true"></el-input>
         </el-form-item>
@@ -73,8 +73,10 @@
           <base-tree-select
             :data="deptData"
             :defaultProps="deptProps" 
+            multiple
+            checkStrictly
             :nodeKey="id" 
-            :checkedKeys="defaultCheckedKeys"
+            :checkedKeys="form.defaultCheckedKeys"
             @popoverHide="popoverHide" >
           </base-tree-select>
         </el-form-item>
@@ -96,7 +98,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button @click="closeDialog">取 消</el-button>
         <el-button type="primary" @click="handleDialogSure">确 定</el-button>
       </div>
     </el-dialog>
@@ -159,6 +161,7 @@ import {getDeptTree} from './../../../../api/right-managing/dept.js'
           superuser:'',
           user:'',
           status: '',
+          defaultCheckedKeys: [],
         },
         menuProps:{
           label: 'name',
@@ -213,10 +216,14 @@ import {getDeptTree} from './../../../../api/right-managing/dept.js'
         }) 
       },
        handleEdit(row) {
-          this.dialogFormVisible=true;
           this.form.username=row.username;
           this.form.id=row.id;
           this.form.status=row.status;
+          this.form.defaultCheckedKeys = [];
+          for(var i=0; i<row.depts.length;i++){
+            this.form.defaultCheckedKeys[i] = row.depts[i].id;
+          }
+          this.dialogFormVisible=true;
       },
       handleDialogSure(){
         var roles = [];
@@ -231,6 +238,7 @@ import {getDeptTree} from './../../../../api/right-managing/dept.js'
         this.form.admin='';
         this.form.superuser='';
         this.form.user='';
+        this.dialogFormVisible=false;
       },
     },
   }
