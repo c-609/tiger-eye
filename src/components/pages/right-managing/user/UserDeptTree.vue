@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div class="user-dept-tree">
+    <el-card>
+      根据部门筛选
     <el-tree 
       node-key="id"
       highlight-current
@@ -11,6 +13,7 @@
       default-expand-all
       >  
     </el-tree>
+    </el-card>
   </div>
 </template>
 
@@ -49,5 +52,11 @@ export default {
 </script>
 
 <style>
-
+/* .el-tree-node:focus > .el-tree-node__content {
+  font-weight: 200
+} */
+.is-current>.el-tree-node__content{
+  font-weight:bold;
+  white-space:normal;
+}
 </style>

@@ -2,10 +2,10 @@
   <div class="user-table">
     <el-table
      ref="dormitoryTable"
-      :data="Tables.slice((currpage - 1) * pagesize, currpage * pagesize)"
-      border
-      :row-style="{height:'0'}"
-      :cell-style="{padding:'0'}" >
+       :data="Tables.slice((currpage - 1) * pagesize, currpage * pagesize)"
+       :row-class-name="tableRowClassName"
+      :header-cell-style="headerColor"
+      >
       <el-table-column
         type="index"
         width="50"
@@ -22,13 +22,15 @@
         :fixed="item.fixed">
         <template slot-scope="scope">
           <div v-if="item.label=='部门'">
+            {{scope.row[item.prop][0].name}}
             <div v-for="(i,index) in scope.row[item.prop]" :key="index">
-                {{scope.row[item.prop][index].name}}
+                <!-- {{scope.row[item.prop][index].name}} -->
             </div>
           </div>
           <div v-else-if="item.type==1">
+             {{scope.row[item.prop][0].nameZh}}
             <div v-for="(i,index) in scope.row[item.prop]" :key="index">
-                {{scope.row[item.prop][index].nameZh}}
+                <!-- {{scope.row[item.prop][index].nameZh}} -->
             </div>
             </div> 
           <div v-else-if="item.label=='状态'">
@@ -183,6 +185,25 @@ import {getDeptTree} from './../../../../api/right-managing/dept.js'
         }
     },
      methods: {
+        tableRowClassName({row, rowIndex}) {
+        if (rowIndex %2=== 0) {
+          return 'warning-row';
+        } else   {
+          return 'success-row';
+        }
+      },
+      headerColor({row, rowIndex}){
+        var color = '#409EFF';
+        if(localStorage.getItem("tremePackers") != null){
+          color= ""+localStorage.getItem("tremePackers")+""
+        }
+        var obj = {
+          background:color,
+          color: '#fff'
+        }
+        // return 'header-color'
+        return obj;
+      },
        popoverHide (checkedIds, checkedData) {
          console.log(checkedIds);
          console.log(checkedData);
@@ -251,6 +272,15 @@ import {getDeptTree} from './../../../../api/right-managing/dept.js'
   margin-left:35px;
   margin-top: 8px;
 } 
+.user-table .el-table .warning-row {
+    background: oldlace;
+  }
+/* .user-table .el-table .header-color {
+    background: #409EFF;
+  } */
+ .user-table .el-table .success-row {
+    background: #f0f9eb;
+  }
 .el-pagination{
 		text-align: right;
     margin-top:20px;
