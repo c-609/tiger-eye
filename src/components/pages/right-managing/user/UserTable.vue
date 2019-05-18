@@ -1,11 +1,15 @@
 <template>
   <div class="user-table">
     <el-table
-     ref="dormitoryTable"
-       :data="Tables.slice((currpage - 1) * pagesize, currpage * pagesize)"
-       :row-class-name="tableRowClassName"
+      ref="dormitoryTable"
+      :data="Tables.slice((currpage - 1) * pagesize, currpage * pagesize)"
+      :row-class-name="tableRowClassName"
       :header-cell-style="headerColor"
       >
+      <el-table-column
+        type="selection"
+        width="55">
+      </el-table-column>
       <el-table-column
         type="index"
         width="50"
