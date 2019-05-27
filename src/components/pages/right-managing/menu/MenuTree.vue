@@ -55,9 +55,9 @@ export default {
         data.status = true
         var id = data.id;
         for(var i=0;i<this.allMenu.length;i++){
-          getMenuList().then(response => {
-            this.allMenu = response.data.data;      
-          })
+          // getMenuList().then(response => {
+          //   this.allMenu = response.data.data;      
+          // })
           if(this.allMenu[i].id==id){
             this.form = this.allMenu[i];
             break;

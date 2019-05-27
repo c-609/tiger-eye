@@ -2,6 +2,7 @@
   <div class="user-table">
     <el-table
       ref="dormitoryTable"
+      max-height="1000"
       :data="Tables.slice((currpage - 1) * pagesize, currpage * pagesize)"
       :row-class-name="tableRowClassName"
       :header-cell-style="headerColor"
@@ -108,14 +109,17 @@
         <el-button type="primary" @click="handleDialogSure">确 定</el-button>
       </div>
     </el-dialog>
+    
     <div>
-    	<el-pagination background
-			layout="prev, pager, next, sizes, total, jumper"
-			:page-sizes="[5, 10, 15, 20]"
-			:page-size="pagesize"
-			:total="Tables.length"
-			@current-change="handleCurrentChange"  
-			@size-change="handleSizeChange" 
+      <el-button size="mini" type="primary" style="float:left" @click="handleBatchDelete">批量删除</el-button>
+    	<el-pagination 
+        background
+        layout="prev, pager, next, sizes, total, jumper"
+        :page-sizes="[5, 10, 15, 20]"
+        :page-size="pagesize"
+        :total="Tables.length"
+        @current-change="handleCurrentChange"  
+        @size-change="handleSizeChange" 
 			>
 		</el-pagination>
     </div>
